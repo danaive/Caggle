@@ -1,17 +1,18 @@
+#!/usr/bin/env python3
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
-from skimage.io import imshow
 
-lnt_res = pd.read_csv('data/submission_lenet5.csv')['Label']
-svm_res = pd.read_csv('data/submission_svm.csv')['Label']
-vgg_res = pd.read_csv('data/submission_vgg.csv')['Label']
-test = pd.read_csv('data/test.csv')
+base = pd.read_csv('data/vgg_results/submission_vgg.csv')['Label']
+data = np.empty(shape=(37, base.shape[0]))
+data[36] = base
 
-cnt = 0
+for i in range(36):
+    data[i] = pd.read_csv('data/vgg_results/submission_vgg_%d.csv' % i)['Label']
 
-for i in range(28000):
-    if lnt_res.iloc[i] != svm_res.iloc[i] and lnt_res.iloc[i] != vgg_res.iloc[i] and vgg_res.iloc[i] != svm_res.iloc[i]:
-        print(i)
-        cnt += 1
-print(cnt)
+data = data.transpose()
+
+for i in range(data.shape[0]):
+    base[i] = np.argmax(np.bincount(data[i].astype(int)))
+sub = pd.read_csv('data/sample_submission.csv')
+sub['Label'] = base
+sub.to_csv('data/submission_vgg_ensemble.csv', index=False)
