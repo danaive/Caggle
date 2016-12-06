@@ -2,6 +2,10 @@
 import pandas as pd
 import numpy as np
 
+# before the 36 round of vgg
+# I made a single round test in data/vgg_results/ubmission_vgg.csv
+
+
 base = pd.read_csv('data/vgg_results/submission_vgg.csv')['Label']
 data = np.empty(shape=(37, base.shape[0]))
 data[36] = base
