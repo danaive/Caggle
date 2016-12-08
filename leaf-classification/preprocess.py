@@ -3,12 +3,11 @@
 from PIL import Image
 import numpy as np
 
-SIZE = 64
+SIZE = 128
 
 for i in range(1, 1585):
     img = Image.open('data/images/%d.jpg' % i)
     data = np.array(img.getdata()).reshape(img.height, img.width)
-    print(data.shape)
     diff = abs(img.height - img.width)
     mx = max(img.height, img.width)
     if img.height > img.width:
@@ -28,7 +27,5 @@ for i in range(1, 1585):
     resized.putdata(data.flatten())
     resized = resized.resize((SIZE, SIZE), Image.HAMMING)
 
-    resized.save('data/augmented/%d_0.jpg' % i)
-    resized.rotate(90).save('data/augmented/%d_1.jpg' % i)
-    resized.rotate(180).save('data/augmented/%d_2.jpg' % i)
-    resized.rotate(270).save('data/augmented/%d_3.jpg' % i)
+    for j in range(4):
+        resized.rotate(j * 90).save('data/augmented_%d/%d_%d.jpg' % (SIZE, i, j))
