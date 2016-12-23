@@ -3,7 +3,7 @@
 from PIL import Image
 import numpy as np
 
-SIZE = 128
+SIZE = 96
 
 for i in range(1, 1585):
     img = Image.open('data/images/%d.jpg' % i)
@@ -26,6 +26,4 @@ for i in range(1, 1585):
     resized = Image.new('L', (mx, mx))
     resized.putdata(data.flatten())
     resized = resized.resize((SIZE, SIZE), Image.HAMMING)
-
-    for j in range(4):
-        resized.rotate(j * 90).save('data/augmented_%d/%d_%d.jpg' % (SIZE, i, j))
+    resized.save('data/augmented_%d/%d.jpg' % (SIZE, i))
